@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.example.passcrypt.ShowPassData">
 
-    <GridLayout
+    <!--   <GridLayout
         android:id="@+id/gridlayout"
         android:layout_width="297dp"
         android:layout_height="160dp"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.498">
 
-        <TextView
+       &lt;!&ndash; <TextView
             android:id="@+id/tv_company"
             android:layout_width="88dp"
             android:layout_height="83dp"
@@ -41,37 +41,55 @@
             android:textColorLink="@android:color/black"
             android:textSize="18sp" />
 
-        <EditText
-            android:id="@+id/et_company"
+        <TextView
+            android:id="@+id/tv_company_data"
             android:layout_width="210dp"
             android:layout_height="83dp"
             android:layout_column="1"
             android:layout_row="0"
             android:gravity="center"
+            android:text=""
             android:textColorLink="@android:color/black"
-            android:textSize="18sp" />
+            android:textSize="18sp" />&ndash;&gt;
 
-        <EditText
-            android:id="@+id/et_password"
+        <TextView
+            android:id="@+id/tv_password_data"
             android:layout_width="210dp"
             android:layout_height="83dp"
             android:layout_column="1"
             android:layout_row="1"
             android:gravity="center"
+            android:text=""
             android:textColorLink="@android:color/black"
             android:textSize="18sp" />
 
 
-    </GridLayout>
-
-    <Button
-        android:id="@+id/btnAddPass"
-        android:layout_width="298dp"
-        android:layout_height="60dp"
-        android:text="ADD"
+    </GridLayout>-->
+    <TextView
+        android:id="@+id/tv_password_data"
+        android:layout_width="0dp"
+        android:layout_height="83dp"
+        android:layout_column="1"
+        android:layout_row="1"
+        android:gravity="center"
+        android:text=""
+        android:textColorLink="@android:color/black"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gridlayout" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnUpdatePass"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:text="UPDATE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_password_data" />
 
 </android.support.constraint.ConstraintLayout>

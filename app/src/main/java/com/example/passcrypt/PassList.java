@@ -1,5 +1,6 @@
 package com.example.passcrypt;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -43,11 +44,12 @@ public class PassList extends AppCompatActivity {
 
         if(exists("passwords_db.db",db)) {
 
-             pass_list = getAllRecords(db);
+             pass_list = db.getAllPasswords();//getAllRecords(db);
             //Log.d("DEBUG","DEBUG");
         } else{
             db.createDatabase();
-            pass_list = getAllRecords(db);
+            pass_list = db.getAllPasswords();
+            //Log.d("Company",pass_list)
         }
         final ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_multiple_choice,pass_list);
         //final AbsListView adapter = AbsListView.MultiChoiceModeListener();//new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,pass_list);
@@ -116,7 +118,31 @@ public class PassList extends AppCompatActivity {
 
                 // ListView Clicked item value
                 String itemValue = (String) listView.getItemAtPosition(position);
+                Password password = db.getPassword(itemValue);
+                String passwordStr  = password.getPassword();
+                Log.d("Password", passwordStr);
+                /*final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getApplicationContext(), R.style.AlertDialogTheme);
+                alertDialog.setTitle(itemValue + "'s Password")
+                            .setMessage(password)
+                            .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });*/
+                //alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"OK");
+                        /*.setCancelable(false)
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        });*/
+                //alertDialog.show();
+
                 Intent intent = new Intent(getApplicationContext(),ShowPassData.class);
+                intent.putExtra("password",passwordStr);
+                intent.putExtra("company",itemValue);
                 startActivity(intent);
                 // Show Alert
 //                Toast.makeText(getApplicationContext(),
@@ -165,7 +191,8 @@ public class PassList extends AppCompatActivity {
 
     }
 
-    public ArrayList<String> getAllRecords(DBHelper dbHelper) {
+    //Works But not needed
+   /* public ArrayList<String> getAllRecords(DBHelper dbHelper) {
         //DBHelper dbHelper = new DBHelper(getApplicationContext());
         Cursor cursor = dbHelper.getAllPasswords();
         ArrayList<String> passwords = new ArrayList<String>();
@@ -185,13 +212,22 @@ public class PassList extends AppCompatActivity {
         dbHelper.close();
 
         return passwords;
-    }
+    }*/
+   //Works but not needed currently
+   /* public String getPassword(String company, DBHelper dbHelper){
+        Password password= dbHelper.getPassword(company);
+        String passwordStr = password.getPassword();
+        Log.d("Password", passwordStr);
+        dbHelper.close();
+
+        return passwordStr;
+    }*/
     public boolean exists(String table, DBHelper db){
         String dbName = db.getDatabaseName();
 
         if(dbName.equals(table)){
-            Log.d("DEBUG",dbName);
-            Log.d("DEBUG","DEBUG");
+           /* Log.d("DEBUG",dbName);
+            Log.d("DEBUG","DEBUG");*/
 
             return true;
         } else{
@@ -205,10 +241,11 @@ public class PassList extends AppCompatActivity {
         }*/
     }
     public ArrayList<String> updateList(DBHelper db,ArrayList<String> ps_list){
-        ArrayList<String> updated_pass_list= getAllRecords(db);
+        ArrayList<String> updated_pass_list= db.getAllPasswords();
         ps_list.clear();
-        for(String password: updated_pass_list){
-            ps_list.add(password);
+        for(String company: updated_pass_list){
+          /*  Log.d("Company:",company);*/
+            ps_list.add(company);
         }
         return ps_list;
     }

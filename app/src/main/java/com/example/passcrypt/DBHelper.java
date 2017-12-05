@@ -12,6 +12,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by breck on 11/19/2017.
  */
@@ -54,7 +57,7 @@ public class DBHelper extends SQLiteOpenHelper {
         //contentValues.put("id", id);
         contentValues.put("company", company);
         contentValues.put("password", password);
-        db.insert("passwords","password", contentValues);
+        db.insert("passwords","null", contentValues);
         if (contentValues != null) {
             return true;
         } else return false;
@@ -62,7 +65,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public boolean updatePassword ( String company, String password){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        //contentValues.put("id", id);
         contentValues.put("company", company);
         contentValues.put("password", password);
         db.update("passwords", contentValues, "company = ? ", new String[] { company } );
@@ -76,19 +78,44 @@ public class DBHelper extends SQLiteOpenHelper {
             return false;
         }
     }
-    public Cursor getPassword(String company){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor result = db.rawQuery("select * from passwords where company=?" +company,new String[] {company});
-        //db.close();
-        //result.close();
-        return result;
+    public Password getPassword(String company){
+        Password password=null;
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            Cursor cursor = db.query(TABLE_NAME, new String[]{
+                            COLUMN_COMPANY, COLUMN_PASSWORD}, COLUMN_COMPANY + "=?",
+                    new String[]{company/*String.valueOf(company)*/}, null, null, null, null);
+            if (cursor != null)
+                cursor.moveToFirst();
+
+
+           password = new Password(cursor.getString(0), cursor.getString(1));
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // return password
+        return password;
     }
-    public Cursor getAllPasswords(){
+    public ArrayList<String> getAllPasswords(){
+        ArrayList<String> passwordList = new ArrayList<String>();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor result = db.rawQuery("select * from passwords", null);// +company +"",new String[] {company});
+        if (result.moveToFirst()) {
+            do {
+                Password password = new Password();
+
+                password.setCompany(result.getString(0));
+                password.setPassword(result.getString(1));
+                // Adding contact to list
+                passwordList.add(password.getCompany());
+            } while (result.moveToNext());
+        }
         //db.close();
         //result.close();
-        return result;
+        return passwordList;
     }
     public void deleteAllPasswords(){
         SQLiteDatabase db =this.getWritableDatabase();
