@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.icu.text.UnicodeSetSpanner;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -35,6 +36,8 @@ public class PassList extends AppCompatActivity {
 
 
     ArrayList pass_list;
+    ArrayList<Password> deleteList = new ArrayList<Password>();
+    ArrayList<Password> updList = new ArrayList<Password>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +48,9 @@ public class PassList extends AppCompatActivity {
         if(exists("passwords_db.db",db)) {
 
              pass_list = db.getAllPasswords();//getAllRecords(db);
-            //Log.d("DEBUG","DEBUG");
         } else{
             db.createDatabase();
             pass_list = db.getAllPasswords();
-            //Log.d("Company",pass_list)
         }
         final ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_multiple_choice,pass_list);
         //final AbsListView adapter = AbsListView.MultiChoiceModeListener();//new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,pass_list);
@@ -59,6 +60,7 @@ public class PassList extends AppCompatActivity {
         listView.setAdapter(adapter);
 
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+
         listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
 
             @Override
@@ -67,17 +69,38 @@ public class PassList extends AppCompatActivity {
                 // Here you can do something when items are selected/de-selected,
                 // such as update the title in the CAB
                 final int checkedCount = listView.getCheckedItemCount();
-                mode.setTitle(checkedCount +" Seclected");
-                adapter.setNotifyOnChange(checked);
-            }
+                mode.setTitle(checkedCount + " Seclected");
+                //adapter.setNotifyOnChange(checked);
+                String itemValue = (String) listView.getItemAtPosition(position);
+                Log.d("Checked:", Boolean.toString(checked));
+                Password password = db.getPassword(itemValue);
+                 deleteList.add(password);
+                 updList.add(password);
+                if(checkedCount==1){
+                    SparseBooleanArray checkedItemPositions =  listView.getCheckedItemPositions();
+                    for(int i=0;i<checkedItemPositions.size();i++) {
+                        if (checkedItemPositions.valueAt(i)) {
+                            String item = listView.getAdapter().getItem(checkedItemPositions.keyAt(i)).toString();
+                            Password temp = db.getPassword(item);
+                            //Log.d("Checked item: ", item);
+                            updList.clear();
+                            updList.add(temp);
+                            adapter.setNotifyOnChange(checked);
+                        }
+                    }
+                }else {
+                    adapter.setNotifyOnChange(checked);
+
+                    }
+                }
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 // Respond to clicks on the actions in the CAB
+
                 switch (item.getItemId()) {
                     case R.id.action_settings:
                         //   deleteSelectedItems();
-
                         mode.finish(); // Action picked, so close the CAB
                         return true;
                     default:
@@ -97,6 +120,8 @@ public class PassList extends AppCompatActivity {
             public void onDestroyActionMode(ActionMode mode) {
                 // Here you can make any necessary updates to the activity when
                 // the CAB is removed. By default, selected items are deselected/unchecked.
+                deleteList.clear();
+                updList.clear();
             }
 
 
@@ -121,6 +146,11 @@ public class PassList extends AppCompatActivity {
                 Password password = db.getPassword(itemValue);
                 String passwordStr  = password.getPassword();
                 Log.d("Password", passwordStr);
+
+                /**
+                 *  For an alert Dialog idea.
+                 *  Could not get to work but will leave in as I like this idea
+                 */
                 /*final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getApplicationContext(), R.style.AlertDialogTheme);
                 alertDialog.setTitle(itemValue + "'s Password")
                             .setMessage(password)
@@ -144,14 +174,11 @@ public class PassList extends AppCompatActivity {
                 intent.putExtra("password",passwordStr);
                 intent.putExtra("company",itemValue);
                 startActivity(intent);
-                // Show Alert
-//                Toast.makeText(getApplicationContext(),
-//                        "Position :"+itemPosition+"  ListItem : " +itemValue, Toast.LENGTH_LONG)
-//                        .show();
             }
         });
         Button btnAdd = (Button)findViewById(R.id.btnAddVal);
         Button btnDel = (Button)findViewById(R.id.btnDelVal);
+        Button btnUpd = (Button)findViewById(R.id.btnUpdatePass);
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,12 +190,50 @@ public class PassList extends AppCompatActivity {
         btnDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                db.deleteAllPasswords();
-                pass_list.clear();
+                //db.deleteAllPasswords();
+                for(Password password: deleteList){
+                    db.deletePassword(password.getCompany());
+                    int index = pass_list.indexOf(password.getCompany());
+                    pass_list.remove(index);
+                }
+                if(deleteList.size()==0){
+                    Toast.makeText(getApplicationContext(),"Select a company to delete!", Toast.LENGTH_LONG).show();
+                }
+                else if(deleteList.size()==1){
+                    Toast.makeText(getApplicationContext(),"Password deleted successfully!", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),"Passwords deleted successfully!", Toast.LENGTH_LONG).show();
+                }
+                deleteList.clear();
                 adapter.notifyDataSetChanged();
+                listView.clearChoices();
+
             }
         });
 
+        btnUpd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(updList.size()==1) {
+                    listView.clearChoices();
+                    Password tempPass = updList.get(0);
+                    String passwordStr = tempPass.getPassword();
+                    String companyStr = tempPass.getCompany();
+                    Intent intent = new Intent(getApplicationContext(), show_update_pass.class);
+                    intent.putExtra("company", companyStr);
+                    intent.putExtra("password", passwordStr);
+                    startActivity(intent);
+                } else if(updList.size()==0) {
+                    Toast.makeText(getApplicationContext(),"Select a password to update!",Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),"Select ONLY 1 to update!",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        /**
+         *  Spinner really isnt needed...leaving for aesthetics only...?
+         *
+         * */
         swipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
         swipeRefresh.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
@@ -240,6 +305,11 @@ public class PassList extends AppCompatActivity {
             return false;
         }*/
     }
+
+    /**
+     *  Is used for Spinner only and Spinner really isnt needed...leaving for aesthetics only...?
+     *
+     * */
     public ArrayList<String> updateList(DBHelper db,ArrayList<String> ps_list){
         ArrayList<String> updated_pass_list= db.getAllPasswords();
         ps_list.clear();

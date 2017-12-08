@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".PassList" />
         <activity android:name=".PassData" />
-        <activity android:name=".ShowPassData"></activity>
+        <activity android:name=".ShowPassData" />
+        <activity android:name=".show_update_pass"></activity>
     </application>
 
 </manifest>

@@ -18,17 +18,17 @@
         <ListView
             android:id="@+id/listview"
             android:layout_width="376dp"
-            android:layout_height="400dp"
+            android:layout_height="375dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="0dp">
 
         </ListView>
 
         <Button
             android:id="@+id/btnAddVal"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
 
             android:text="ADD"
             app:layout_constraintEnd_toEndOf="parent"
@@ -39,8 +39,18 @@
         <Button
             android:id="@+id/btnDelVal"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:text="DELETE"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnUpdatePass" />
+
+        <Button
+            android:id="@+id/btnUpdatePass"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:text="UPDATE"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"

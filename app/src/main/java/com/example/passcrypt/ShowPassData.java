@@ -16,7 +16,7 @@ public class ShowPassData extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_pass_data);
-        Button btnUpdate = (Button) findViewById(R.id.btnUpdatePass);
+//        Button btnUpdate = (Button) findViewById(R.id.btnUpdatePass);
         String userPassword;
         String userCompany;
 //        final TextView company = (TextView) findViewById(R.id.tv_company_data);
@@ -28,11 +28,11 @@ public class ShowPassData extends AppCompatActivity {
 //            company.setText(userCompany);
             password.setText(userPassword);
         }
-        btnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),"Reached update Password",Toast.LENGTH_LONG).show();
-            }
-        });
+//        btnUpdate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(getApplicationContext(),"Reached update Password",Toast.LENGTH_LONG).show();
+//            }
+//        });
     }
 }

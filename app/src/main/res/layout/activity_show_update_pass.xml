@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.passcrypt.ShowPassData">
+    tools:context="com.example.passcrypt.show_update_pass">
 
-    <!--   <GridLayout
+
+       <GridLayout
         android:id="@+id/gridlayout"
         android:layout_width="297dp"
         android:layout_height="160dp"
@@ -19,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.498">
 
-       &lt;!&ndash; <TextView
+        <TextView
             android:id="@+id/tv_company"
             android:layout_width="88dp"
             android:layout_height="83dp"
@@ -37,7 +38,7 @@
             android:layout_column="0"
             android:layout_row="1"
             android:gravity="center"
-            android:text="Password"
+            android:text="New Password"
             android:textColorLink="@android:color/black"
             android:textSize="18sp" />
 
@@ -50,10 +51,10 @@
             android:gravity="center"
             android:text=""
             android:textColorLink="@android:color/black"
-            android:textSize="18sp" />&ndash;&gt;
+            android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/tv_password_data"
+        <EditText
+            android:id="@+id/et_password_data"
             android:layout_width="210dp"
             android:layout_height="83dp"
             android:layout_column="1"
@@ -64,8 +65,8 @@
             android:textSize="18sp" />
 
 
-    </GridLayout>-->
-    <TextView
+    </GridLayout>
+    <!--<TextView
         android:id="@+id/tv_password_data"
         android:layout_width="0dp"
         android:layout_height="83dp"
@@ -81,8 +82,9 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+        -->
 
-    <!--<Button
+    <Button
         android:id="@+id/btnUpdatePass"
         android:layout_width="0dp"
         android:layout_height="60dp"
@@ -90,6 +92,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_password_data" />-->
+        app:layout_constraintTop_toBottomOf="@+id/gridlayout" />
 
 </android.support.constraint.ConstraintLayout>

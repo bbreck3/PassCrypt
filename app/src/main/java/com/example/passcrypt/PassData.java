@@ -42,7 +42,7 @@ public class PassData extends AppCompatActivity {
                     String passwordStr = password.getText().toString();
                     db.insertPassword(companyStr, passwordStr);
                     //Toast.makeText(getApplicationContext(),"Company: " + companyStr + "\n Password: " + passwordStr,Toast.LENGTH_LONG).show();
-                    Toast.makeText(getApplicationContext(), "Passwords Stored Successfully!", Toast.LENGTH_LONG);
+                    Toast.makeText(getApplicationContext(), "Passwords Stored Successfully!", Toast.LENGTH_LONG).show();
                     for(long i =0;i<300000000;i++){
                         int temp=0;
                         temp+=i;
