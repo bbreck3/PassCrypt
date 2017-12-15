@@ -31,6 +31,10 @@ import android.widget.Toast;
 import android.widget.AbsListView.MultiChoiceModeListener;
 
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.concurrent.locks.Lock;
+
+import javax.crypto.SecretKey;
 
 public class PassList extends AppCompatActivity {
 
@@ -38,12 +42,17 @@ public class PassList extends AppCompatActivity {
     ArrayList pass_list;
     ArrayList<Password> deleteList = new ArrayList<Password>();
     ArrayList<Password> updList = new ArrayList<Password>();
+    AESHelper aesHelper = new AESHelper();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pass_list);
         final DBHelper db = new DBHelper(this);
         final SwipeRefreshLayout swipeRefresh;
+
+
 
         if(exists("passwords_db.db",db)) {
 
@@ -144,6 +153,7 @@ public class PassList extends AppCompatActivity {
                 // ListView Clicked item value
                 String itemValue = (String) listView.getItemAtPosition(position);
                 Password password = db.getPassword(itemValue);
+                String key = password.getKey();
                 String passwordStr  = password.getPassword();
                 Log.d("Password", passwordStr);
 
@@ -173,6 +183,7 @@ public class PassList extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(),ShowPassData.class);
                 intent.putExtra("password",passwordStr);
                 intent.putExtra("company",itemValue);
+                intent.putExtra("key",key);
                 startActivity(intent);
             }
         });
@@ -183,8 +194,18 @@ public class PassList extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                Intent intent = new Intent(PassList.this, PassData.class);
-                startActivity(intent);
+                try {
+                    //SecretKey secretKey = aesHelper.generateKey();
+                   // Base64.getEncoder().encodeToString(secretKey.getEncoded());
+                    //String keyStr = secretKey.getEncoded().toString();
+                    //Log.d("Key: ", secretKey.getEncoded().toString());
+                    Intent intent = new Intent(PassList.this, PassData.class);
+
+                    //intent.putExtra("key", keyStr);
+                    startActivity(intent);
+                }catch (Exception e){
+                    Log.d("Error: ",e.toString());
+                }
             }
         });
         btnDel.setOnClickListener(new View.OnClickListener() {
@@ -252,7 +273,12 @@ public class PassList extends AppCompatActivity {
                 }, 3000);
             }
         });
+    }
 
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        startActivity(new Intent(this, LockScreen.class));
 
     }
 
@@ -319,4 +345,5 @@ public class PassList extends AppCompatActivity {
         }
         return ps_list;
     }
+
 }

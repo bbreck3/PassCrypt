@@ -5,7 +5,7 @@ package com.example.passcrypt;
  */
 
 public class Password {
-    String company,password;
+    String company,password,key;
     int id;
     public Password(){
 
@@ -14,6 +14,7 @@ public class Password {
         //this.id = id;
         this.company = company;
         this.password = password;
+        //this.key = key;
     }
     /*public void setId(int id){
         this.id = id;
@@ -32,6 +33,12 @@ public class Password {
     }
     public String getPassword(){
         return password;
+    }
+    public void setKey(String key){
+        this.key =key;
+    }
+    public String getKey(){
+        return key;
     }
     public String toCompanyString(){
         return getCompany();

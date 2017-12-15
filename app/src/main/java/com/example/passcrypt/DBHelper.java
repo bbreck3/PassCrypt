@@ -26,6 +26,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_PASSWORD = "password";
     public static final String COLUMN_COMPANY = "company";
+    public static final String COLUMN_KEY = "key";
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -33,12 +34,18 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        /*db.execSQL(
+                "create table " + TABLE_NAME + " (" + COLUMN_COMPANY + " text primary key," + COLUMN_PASSWORD + " text," + COLUMN_KEY + " text" +")"
+        );*/
         db.execSQL(
                 "create table " + TABLE_NAME + " (" + COLUMN_COMPANY + " text primary key," + COLUMN_PASSWORD + " text)"
         );
 
     } public void createDatabase() {
         SQLiteDatabase db = this.getWritableDatabase();
+        /*db.execSQL(
+                "create table " + TABLE_NAME + " (" + COLUMN_COMPANY + " text primary key," + COLUMN_PASSWORD + " text," + COLUMN_KEY + " text" +")"
+        );*/
         db.execSQL(
                 "create table " + TABLE_NAME + " (" + COLUMN_COMPANY + " text primary key," + COLUMN_PASSWORD + " text)"
         );
@@ -57,6 +64,7 @@ public class DBHelper extends SQLiteOpenHelper {
         //contentValues.put("id", id);
         contentValues.put("company", company);
         contentValues.put("password", password);
+        //contentValues.put("key", key);
         db.insert("passwords","null", contentValues);
         if (contentValues != null) {
             return true;
@@ -99,6 +107,28 @@ public class DBHelper extends SQLiteOpenHelper {
         // return password
         return password;
     }
+
+   /* public Password getKey(String key){
+        Password password = null;
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+
+            Cursor cursor = db.query(TABLE_NAME, new String[]{
+                            COLUMN_COMPANY, COLUMN_PASSWORD}, COLUMN_KEY + "=?",
+                    new String[]{key*//*String.valueOf(company)*//*}, null, null, null, null);
+            if (cursor != null)
+                cursor.moveToFirst();
+
+
+            password = new Password(cursor.getString(0), cursor.getString(1));
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // return password
+        return password;
+    }*/
     public ArrayList<String> getAllPasswords(){
         ArrayList<String> passwordList = new ArrayList<String>();
         SQLiteDatabase db = this.getReadableDatabase();

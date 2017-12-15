@@ -22,4 +22,10 @@ public class LockScreen extends AppCompatActivity {
             }
         });
     }
+   /* @Override
+    protected void onRestart(){
+        super.onRestart();
+        setContentView(R.layout.activity_lock_screen);
+
+    }*/
 }

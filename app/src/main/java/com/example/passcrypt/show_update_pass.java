@@ -37,12 +37,41 @@ public class show_update_pass extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(),"Made it to Update password",Toast.LENGTH_LONG).show();
                 String passwordStr = password.getText().toString();
                 Log.d("Comapny + Password",companyStr + " , "+ passwordStr);
-                db.updatePassword(companyStr,passwordStr);
+                String userPass = encryption(passwordStr);
+                Log.d("Debug Str btn clicked: ", userPass);
+                db.updatePassword(companyStr,userPass);
                 Toast.makeText(getApplicationContext(), "Password Updated Successfully!", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(),PassList.class);
                 startActivity(intent);
             }
 
         });
+    }
+    @Override
+    protected void onRestart(){
+        super.onRestart();
+        startActivity(new Intent(this, LockScreen.class));
+
+    }
+    public String encryption(String strNormalText) {
+        String seedValue = "YourSecKey";
+        String normalTextEnc = "";
+        try {
+            normalTextEnc = AESHelper.encrypt(seedValue, strNormalText);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return normalTextEnc;
+    }
+
+    public String decryption(String strEncryptedText) {
+        String seedValue = "YourSecKey";
+        String strDecryptedText = "";
+        try {
+            strDecryptedText = AESHelper.decrypt(seedValue, strEncryptedText);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return strDecryptedText;
     }
 }
