@@ -2,6 +2,7 @@ package com.example.passcrypt;
 
 import android.content.Context;
 import android.content.Intent;
+import android.icu.text.UnicodeSetSpanner;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,20 +14,40 @@ import android.widget.Toast;
 public class LockScreen extends AppCompatActivity {
 
     Button btn0,btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8,btn9,btnDel,btnGo;
-    TextView ed_pin;
+    TextView ed_pin, setPin;
     String pin[] = {"-","-","-","-"};
 
     String pinStr="";
     String pinStrAstr="*";
     String pinStrFinal[] = new String[4];
+    String finalPinStr;
     boolean last = false;
     int counter =0;
     final int MAX_LEN =4;
     Context context = this;
+    String userPin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_screen);
+        setPin = (TextView)findViewById(R.id.setPin);
+        final DBPinHelper dbPin = new DBPinHelper(this);
+
+
+
+        if(exists("pins_db.db",dbPin)) {
+
+            userPin= dbPin.getPin();//getAllRecords(db)
+            if(userPin.equals("")){
+                setPin.setText(" Set Pin");
+            } else {
+                setPin.setText("");
+            }
+        } else{
+            dbPin.createDatabase();
+            setPin.setText("Set Pin");
+            //userPin = dbPin.getPin();
+        }
 
        /* Button button = (Button) findViewById(R.id.btn_show_pass);
         button.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +91,7 @@ public class LockScreen extends AppCompatActivity {
                         temp+=pin[i];
                     }
                     ed_pin.setText(temp);
-                } else if(counter==3){
+                } else if(counter==3 && last){
                     pin[counter]=pinStrAstr;
                     pinStrFinal[counter]="0";
                     String temp ="";
@@ -82,6 +103,7 @@ public class LockScreen extends AppCompatActivity {
                     for(int i=0;i<pinStrFinal.length;i++){
                         finalPin+=pinStrFinal[i];
                     }
+                    setFinalPin(finalPin);
                     Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Pin limit exceeded", Toast.LENGTH_LONG).show();
@@ -117,6 +139,7 @@ public class LockScreen extends AppCompatActivity {
                     for(int i=0;i<pinStrFinal.length;i++){
                         finalPin+=pinStrFinal[i];
                     }
+                    setFinalPin(finalPin);
                     Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Pin limit exceeded", Toast.LENGTH_LONG).show();
@@ -151,6 +174,7 @@ public class LockScreen extends AppCompatActivity {
                     for(int i=0;i<pinStrFinal.length;i++){
                         finalPin+=pinStrFinal[i];
                     }
+                    setFinalPin(finalPin);
                     Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Pin limit exceeded", Toast.LENGTH_LONG).show();
@@ -185,6 +209,7 @@ public class LockScreen extends AppCompatActivity {
                     for(int i=0;i<pinStrFinal.length;i++){
                         finalPin+=pinStrFinal[i];
                     }
+                    setFinalPin(finalPin);
                     Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Pin limit exceeded", Toast.LENGTH_LONG).show();
@@ -219,6 +244,7 @@ public class LockScreen extends AppCompatActivity {
                     for(int i=0;i<pinStrFinal.length;i++){
                         finalPin+=pinStrFinal[i];
                     }
+                    setFinalPin(finalPin);
                     Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Pin limit exceeded", Toast.LENGTH_LONG).show();
@@ -253,6 +279,7 @@ public class LockScreen extends AppCompatActivity {
                     for(int i=0;i<pinStrFinal.length;i++){
                         finalPin+=pinStrFinal[i];
                     }
+                    setFinalPin(finalPin);
                     Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Pin limit exceeded", Toast.LENGTH_LONG).show();
@@ -287,6 +314,7 @@ public class LockScreen extends AppCompatActivity {
                     for(int i=0;i<pinStrFinal.length;i++){
                         finalPin+=pinStrFinal[i];
                     }
+                    setFinalPin(finalPin);
                     Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Pin limit exceeded", Toast.LENGTH_LONG).show();
@@ -321,6 +349,7 @@ public class LockScreen extends AppCompatActivity {
                     for(int i=0;i<pinStrFinal.length;i++){
                         finalPin+=pinStrFinal[i];
                     }
+                    setFinalPin(finalPin);
                     Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Pin limit exceeded", Toast.LENGTH_LONG).show();
@@ -355,6 +384,7 @@ public class LockScreen extends AppCompatActivity {
                     for(int i=0;i<pinStrFinal.length;i++){
                         finalPin+=pinStrFinal[i];
                     }
+                    setFinalPin(finalPin);
                     Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Pin limit exceeded", Toast.LENGTH_LONG).show();
@@ -366,6 +396,7 @@ public class LockScreen extends AppCompatActivity {
             public void onClick(View view) {
                 Log.d("Counter: ", Integer.toString(counter));
                 if(counter==3){
+                    Log.d("Debug: Counter is 3: ", Integer.toString(counter));
                     last=true;
                 }
                 if (counter <3) {
@@ -389,6 +420,7 @@ public class LockScreen extends AppCompatActivity {
                     for(int i=0;i<pinStrFinal.length;i++){
                         finalPin+=pinStrFinal[i];
                     }
+                    setFinalPin(finalPin);
                     Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Pin limit exceeded", Toast.LENGTH_LONG).show();
@@ -439,8 +471,18 @@ public class LockScreen extends AppCompatActivity {
             public void onClick(View view) {
                 //implement if else logic later
                 //Toast.makeText(getApplicationContext(),pin,Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getApplicationContext(), PassList.class);
-                startActivity(intent);
+                String setPin1 = getFinalPin();
+                String pinTmp = dbPin.getPin();
+                if(pinTmp.equals("")){
+                    Intent intent = new Intent(getApplicationContext(), SetPin.class);
+                    intent.putExtra("pin",setPin1);
+                    startActivity(intent);
+                }else if(!setPin1.equals(pinTmp)){
+                    Toast.makeText(getApplicationContext(),"Incorrect Pin",Toast.LENGTH_LONG).show();
+                } else{
+                    Intent intent = new Intent(getApplicationContext(), PassList.class);
+                    startActivity(intent);
+                }
             }
         });
         /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -458,6 +500,30 @@ public class LockScreen extends AppCompatActivity {
 
     public void refreshPin(){
         ed_pin.setText("----");
+    }
+    public void setFinalPin(String pin){
+        this.finalPinStr=pin;
+    }
+    public String getFinalPin(){
+        return finalPinStr;
+    }
+    public boolean exists(String table, DBPinHelper db){
+        String dbName = db.getDatabaseName();
+
+        if(dbName.equals(table)){
+           /* Log.d("DEBUG",dbName);
+            Log.d("DEBUG","DEBUG");*/
+
+            return true;
+        } else{
+            return false;
+        }
+        /*try{
+            db.("Select * FROM " +table,null);
+            return true;
+        }catch (SQLException e){
+            return false;
+        }*/
     }
 }
    /* @Override

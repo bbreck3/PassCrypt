@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.passcrypt.LockScreen">
+    tools:context="com.example.passcrypt.SetPin">
 
     <TextView
         android:id="@+id/setPin"
         android:layout_width="130dp"
         android:layout_height="35dp"
         android:gravity="center"
-        android:text="Set Pin"
+        android:text="Confirm"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/tvPin"
@@ -22,27 +22,34 @@
     <TextView
         android:id="@+id/tvPin"
         android:layout_width="134dp"
-        android:layout_height="40dp"
+        android:layout_height="57dp"
+        android:layout_alignEnd="@+id/gridLayout"
+        android:layout_alignLeft="@+id/gridLayout"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/gridLayout"
+        android:layout_alignStart="@+id/gridLayout"
+        android:layout_marginTop="5dp"
         android:gravity="center"
         android:text="----"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="45dp"
+        android:textSize="70dp"
         app:layout_constraintBottom_toTopOf="@+id/gridLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <GridLayout
         android:id="@+id/gridLayout"
         android:layout_width="270dp"
-        android:layout_height="358dp"
+        android:layout_height="361dp"
         android:layout_below="@+id/tvPin"
         android:layout_centerHorizontal="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/tvPin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/tvPin">
 
         <Button
             android:id="@+id/btn1"
@@ -179,14 +186,4 @@
 
     </GridLayout>
 
-    <!-- <Button
-         android:id="@+id/btn_show_pass"
-         android:layout_width="203dp"
-         android:layout_height="53dp"
-         android:text="Show Passwords"
-         app:layout_constraintBottom_toBottomOf="parent"
-         app:layout_constraintEnd_toEndOf="parent"
-         app:layout_constraintHorizontal_bias="0.5"
-         app:layout_constraintStart_toStartOf="parent"
-         app:layout_constraintTop_toTopOf="parent" />-->
 </android.support.constraint.ConstraintLayout>
