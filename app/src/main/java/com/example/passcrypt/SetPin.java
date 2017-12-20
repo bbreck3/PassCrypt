@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.security.SecureRandom;
+
 public class SetPin extends AppCompatActivity {
 
     Button btn0,btn1,btn2,btn3,btn4,btn5,btn6,btn7,btn8,btn9,btnDel,btnGo;
@@ -25,6 +27,7 @@ public class SetPin extends AppCompatActivity {
     final int MAX_LEN =4;
     Context context = this;
     String userPin1;
+    AESHelper aesHelper = new AESHelper();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -463,9 +466,15 @@ public class SetPin extends AppCompatActivity {
                 String userPin2 = getFinalPin();
                     if(userPin2.equals(userPin1)){
                        //Toast.makeText(getApplicationContext(),"Pins Match!",Toast.LENGTH_LONG).show();
-                        dbPin.insertPin(userPin2);
-                        Intent intent = new Intent(getApplicationContext(),LockScreen.class);
-                        startActivity(intent);
+                        /*String seed="5476641322446326";*/
+                        try {
+                            //int pinEnc = userPin2.hashCode();//AESHelper.encryption(userPin2);//encryption(userPin2);
+                            dbPin.insertPin(userPin2);
+                            Intent intent = new Intent(getApplicationContext(), LockScreen.class);
+                            startActivity(intent);
+                        }catch (Exception e){
+                            Log.d("Error: ", e.toString());
+                        }
                     } else{
                         Toast.makeText(getApplicationContext(),"Pins DO NOT Match!",Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(getApplicationContext(),LockScreen.class);
@@ -498,6 +507,7 @@ public class SetPin extends AppCompatActivity {
                 return finalPinStr;
             }
         }
+
    /* @Override
     protected void onRestart(){
         super.onRestart();

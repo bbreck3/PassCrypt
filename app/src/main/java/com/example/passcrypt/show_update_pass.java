@@ -23,6 +23,8 @@ public class show_update_pass extends AppCompatActivity {
         final TextView company = (TextView) findViewById(R.id.tv_company_data);
         final EditText password = (EditText) findViewById(R.id.et_password_data);
         final DBHelper db = new DBHelper(this);
+        DBPinHelper dbPin = new DBPinHelper(this);
+        final String pin = dbPin.getPin();
 
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null){
@@ -37,7 +39,7 @@ public class show_update_pass extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(),"Made it to Update password",Toast.LENGTH_LONG).show();
                 String passwordStr = password.getText().toString();
                 Log.d("Comapny + Password",companyStr + " , "+ passwordStr);
-                String userPass = encryption(passwordStr);
+                String userPass = AESHelper.encryption(pin,passwordStr);
                 Log.d("Debug Str btn clicked: ", userPass);
                 db.updatePassword(companyStr,userPass);
                 Toast.makeText(getApplicationContext(), "Password Updated Successfully!", Toast.LENGTH_LONG).show();
@@ -53,7 +55,7 @@ public class show_update_pass extends AppCompatActivity {
         startActivity(new Intent(this, LockScreen.class));
 
     }
-    public String encryption(String strNormalText) {
+   /* public String encryption(String strNormalText) {
         String seedValue = "YourSecKey";
         String normalTextEnc = "";
         try {
@@ -73,5 +75,5 @@ public class show_update_pass extends AppCompatActivity {
             e.printStackTrace();
         }
         return strDecryptedText;
-    }
+    }*/
 }

@@ -36,6 +36,7 @@ public class PassData extends AppCompatActivity {
    //SecretKey secretKey;
     SecretKey secret;
     AESHelper aesHelper = new AESHelper();
+    DBPinHelper dbPin = new DBPinHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class PassData extends AppCompatActivity {
         final EditText company = (EditText) findViewById(R.id.et_company);
         final EditText password = (EditText) findViewById(R.id.et_password);
         final DBHelper db = new DBHelper(this);
+        final String pin = dbPin.getPin();
         //final AESHelper AESHelper =new AESHelper();
 //        SecretKey secretKey = generateKey("password");
         try {
@@ -82,9 +84,9 @@ public class PassData extends AppCompatActivity {
                         aesHelper.setSecretKey(originalKey);*/
 
                        // Log.d("Plaintext: ", passwordStr);
-                        String enc = encryption(passwordStr);
+                        String enc = AESHelper.encryption(pin,passwordStr);
                         //Log.d("Encrypted: ", enc);
-                        String dec = decryption(enc);
+                        //String dec = AESHelper.decryption(enc);
                         //Log.d("Original: ", dec);
                         //aesHelper.setSecretKey(keyStr);
                        //  byte[] passwordEnc = aesHelper.encrypt(passwordStr,aesHelper.getSecretKey());
@@ -125,7 +127,7 @@ public class PassData extends AppCompatActivity {
         startActivity(new Intent(this, LockScreen.class));
 
     }
-    public String encryption(String strNormalText){
+    /*public String encryption(String strNormalText){
         String seedValue = "YourSecKey";
         String normalTextEnc="";
         try {
@@ -144,7 +146,7 @@ public class PassData extends AppCompatActivity {
             e.printStackTrace();
         }
         return strDecryptedText;
-    }
+    }*/
 
   /* public SecretKey generateKey(String password) throws NoSuchAlgorithmException,InvalidKeySpecException{
         SecretKey secret = new SecretKeySpec(password.getBytes(),"AES");

@@ -38,8 +38,9 @@ public class LockScreen extends AppCompatActivity {
         if(exists("pins_db.db",dbPin)) {
 
             userPin= dbPin.getPin();//getAllRecords(db)
+            //userPin=AESHelper.decryption(userPinEnc);
             if(userPin.equals("")){
-                setPin.setText(" Set Pin");
+                setPin.setText("Set Pin");
             } else {
                 setPin.setText("");
             }
@@ -472,12 +473,14 @@ public class LockScreen extends AppCompatActivity {
                 //implement if else logic later
                 //Toast.makeText(getApplicationContext(),pin,Toast.LENGTH_LONG).show();
                 String setPin1 = getFinalPin();
-                String pinTmp = dbPin.getPin();
+               //String pin1Hash = Integer.toString(setPin1.hashCode());
+                //String userPinEnc= dbPin.getPin();//getAllRecords(db)
+                String pinTmp =dbPin.getPin();//AESHelper.decryption(userPinEnc);
                 if(pinTmp.equals("")){
                     Intent intent = new Intent(getApplicationContext(), SetPin.class);
                     intent.putExtra("pin",setPin1);
                     startActivity(intent);
-                }else if(!setPin1.equals(pinTmp)){
+                }else if(!pinTmp.equals(setPin1)){
                     Toast.makeText(getApplicationContext(),"Incorrect Pin",Toast.LENGTH_LONG).show();
                 } else{
                     Intent intent = new Intent(getApplicationContext(), PassList.class);

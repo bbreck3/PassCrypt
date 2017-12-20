@@ -22,6 +22,8 @@ public class ShowPassData extends AppCompatActivity {
         String userCompany;
         String userKey;
         AESHelper AESHelper = new AESHelper();
+        DBPinHelper dbPinHelper = new DBPinHelper(this);
+        String pin = dbPinHelper.getPin();
 //        final TextView company = (TextView) findViewById(R.id.tv_company_data);
         final TextView password = (TextView) findViewById(R.id.tv_password_data);
         Bundle bundle = getIntent().getExtras();
@@ -29,7 +31,7 @@ public class ShowPassData extends AppCompatActivity {
             if (bundle != null) {
                 userPassword = bundle.getString("password");
                 //userCompany = bundle.getString("company");
-                String userPass = decryption(userPassword);
+                String userPass = AESHelper.decryption(pin,userPassword);
                 password.setText(userPass);
             }
         } catch (Exception e) {
@@ -50,7 +52,7 @@ public class ShowPassData extends AppCompatActivity {
     }
 
 
-    public String encryption(String strNormalText) {
+    /*public String encryption(String strNormalText) {
         String seedValue = "YourSecKey";
         String normalTextEnc = "";
         try {
@@ -70,5 +72,5 @@ public class ShowPassData extends AppCompatActivity {
             e.printStackTrace();
         }
         return strDecryptedText;
-    }
+    }*/
 }

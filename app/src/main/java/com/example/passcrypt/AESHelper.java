@@ -1,5 +1,6 @@
 package com.example.passcrypt;
 
+import android.content.Context;
 import android.util.Base64;
 import android.util.Log;
 
@@ -33,6 +34,7 @@ public class AESHelper  {
 
         }
 
+
     private static final String TAG = "AESCrypt";
 
     //AESCrypt-ObjC uses CBC and PKCS7Padding
@@ -41,12 +43,14 @@ public class AESHelper  {
 
     //AESCrypt-ObjC uses SHA-256 (and so a 256-bit key)
     private static final String HASH_ALGORITHM = "SHA-256";
+    private static String seed ="";
 
     //AESCrypt-ObjC uses blank IV (not the best security, but the aim here is compatibility)
     private static final byte[] ivBytes = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
     //togglable log option (please turn off in live!)
     public static boolean DEBUG_LOG_ENABLED = false;
+
 
 
     /**
@@ -56,6 +60,7 @@ public class AESHelper  {
      * @return SHA256 of the password
      */
     private static SecretKeySpec generateKey(final String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+
         final MessageDigest digest = MessageDigest.getInstance(HASH_ALGORITHM);
         byte[] bytes = password.getBytes("UTF-8");
         digest.update(bytes, 0, bytes.length);
@@ -66,6 +71,18 @@ public class AESHelper  {
         SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
         return secretKeySpec;
     }
+    public static void setSeed(String pin){
+        SecureRandom secureRandom = new SecureRandom();
+        int tempPin = Integer.parseInt(pin);
+        secureRandom.setSeed(tempPin);
+        int tempRand = secureRandom.nextInt(tempPin);
+        seed=Integer.toString(tempRand);
+    }
+
+    public static String getSeed(){
+        return seed;
+    }
+
 
 
     /**
@@ -206,6 +223,32 @@ public class AESHelper  {
             hexChars[j * 2 + 1] = hexArray[v & 0x0F];
         }
         return new String(hexChars);
+    }
+
+    public static String encryption(String pin,String strNormalText){
+        //pin is the pin hash, not the actual pin
+        //setSeed(pin);
+        String seedValue = pin;//getSeed();//"5476641322446326";
+        String normalTextEnc="";
+        try {
+            normalTextEnc = AESHelper.encrypt(seedValue, strNormalText);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return normalTextEnc;
+    }
+    public static String decryption(String pin,String strEncryptedText){
+        // //pin is the pin hash, not the actual pin
+        //setSeed(pin);
+        String seedValue = pin;//getSeed();
+        //String seedValue = pin+strEncryptedText;//"5476641322446326";
+        String strDecryptedText="";
+        try {
+            strDecryptedText = AESHelper.decrypt(seedValue, strEncryptedText);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return strDecryptedText;
     }
 
 
