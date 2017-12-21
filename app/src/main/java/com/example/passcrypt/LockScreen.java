@@ -105,7 +105,7 @@ public class LockScreen extends AppCompatActivity {
                         finalPin+=pinStrFinal[i];
                     }
                     setFinalPin(finalPin);
-                    Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Pin limit exceeded", Toast.LENGTH_LONG).show();
                 }
@@ -141,7 +141,7 @@ public class LockScreen extends AppCompatActivity {
                         finalPin+=pinStrFinal[i];
                     }
                     setFinalPin(finalPin);
-                    Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Pin limit exceeded", Toast.LENGTH_LONG).show();
                 }
@@ -176,7 +176,7 @@ public class LockScreen extends AppCompatActivity {
                         finalPin+=pinStrFinal[i];
                     }
                     setFinalPin(finalPin);
-                    Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Pin limit exceeded", Toast.LENGTH_LONG).show();
                 }
@@ -211,7 +211,7 @@ public class LockScreen extends AppCompatActivity {
                         finalPin+=pinStrFinal[i];
                     }
                     setFinalPin(finalPin);
-                    Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Pin limit exceeded", Toast.LENGTH_LONG).show();
                 }
@@ -246,7 +246,7 @@ public class LockScreen extends AppCompatActivity {
                         finalPin+=pinStrFinal[i];
                     }
                     setFinalPin(finalPin);
-                    Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Pin limit exceeded", Toast.LENGTH_LONG).show();
                 }
@@ -281,7 +281,7 @@ public class LockScreen extends AppCompatActivity {
                         finalPin+=pinStrFinal[i];
                     }
                     setFinalPin(finalPin);
-                    Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
+                  //  Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Pin limit exceeded", Toast.LENGTH_LONG).show();
                 }
@@ -316,7 +316,7 @@ public class LockScreen extends AppCompatActivity {
                         finalPin+=pinStrFinal[i];
                     }
                     setFinalPin(finalPin);
-                    Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Pin limit exceeded", Toast.LENGTH_LONG).show();
                 }
@@ -351,7 +351,7 @@ public class LockScreen extends AppCompatActivity {
                         finalPin+=pinStrFinal[i];
                     }
                     setFinalPin(finalPin);
-                    Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Pin limit exceeded", Toast.LENGTH_LONG).show();
                 }
@@ -386,7 +386,7 @@ public class LockScreen extends AppCompatActivity {
                         finalPin+=pinStrFinal[i];
                     }
                     setFinalPin(finalPin);
-                    Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Pin limit exceeded", Toast.LENGTH_LONG).show();
                 }
@@ -422,7 +422,7 @@ public class LockScreen extends AppCompatActivity {
                         finalPin+=pinStrFinal[i];
                     }
                     setFinalPin(finalPin);
-                    Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getApplicationContext(),"Pin: " + finalPin, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), "Pin limit exceeded", Toast.LENGTH_LONG).show();
                 }
