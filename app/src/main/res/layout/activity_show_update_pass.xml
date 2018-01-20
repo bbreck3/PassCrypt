@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.passcrypt.show_update_pass">
+    tools:context="com.passcrypt.passcrypt.show_update_pass">
 
 
        <GridLayout

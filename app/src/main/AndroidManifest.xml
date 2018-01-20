@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.passcrypt">
+    package="com.passcrypt.passcrypt">
+
+    <uses-permission android:name="android.permission.USE_FINGERPRINT"></uses-permission>
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/password_lock_launcher"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/password_lock_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LockScreen">
+        <activity android:name=".FingerprintActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,7 +22,9 @@
         <activity android:name=".PassData" />
         <activity android:name=".ShowPassData" />
         <activity android:name=".show_update_pass" />
-        <activity android:name=".SetPin"></activity>
+        <activity android:name=".SetPin" />
+        <activity android:name=".LockScreen" />
+        <activity android:name=".AuthSuccess"></activity>
     </application>
 
 </manifest>

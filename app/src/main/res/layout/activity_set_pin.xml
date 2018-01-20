@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.passcrypt.SetPin">
+    tools:context="com.passcrypt.passcrypt.SetPin">
 
     <TextView
         android:id="@+id/setPin"
