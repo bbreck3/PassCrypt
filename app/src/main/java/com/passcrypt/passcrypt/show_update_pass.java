@@ -13,7 +13,7 @@ import android.widget.Toast;
 public class show_update_pass extends AppCompatActivity {
 
     String companyStr;
-    //String passwordStr;
+    String passwordStr;
     String pin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class show_update_pass extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(getApplicationContext(),"Made it to Update password",Toast.LENGTH_LONG).show();
-               String  passwordStr = password.getText().toString();
+               passwordStr = password.getText().toString();
                 Log.d("Comapny + Password",companyStr + " , "+ passwordStr);
                 String userPass = AESHelper.encryption(pin,passwordStr);
                 Log.d("Debug Str btn clicked: ", userPass);
@@ -62,9 +62,8 @@ public class show_update_pass extends AppCompatActivity {
     protected void onPause(){
         super.onPause();
         DBHelper db = new DBHelper(this);
-        DBPinHelper dbPin = new DBPinHelper(this);
         EditText password_autosave=(EditText)findViewById(R.id.et_password_data);
-        String passwordStr = password_autosave.getText().toString();
+        passwordStr = password_autosave.getText().toString();
         Log.d("Comapny + Password",companyStr + " , "+ passwordStr);
         String userPass = AESHelper.encryption(pin,passwordStr);
         Log.d("Debug Str btn clicked: ", userPass);
@@ -77,15 +76,15 @@ public class show_update_pass extends AppCompatActivity {
     @Override
     protected void onStop(){
         super.onStop();
-       /* DBHelper db = new DBHelper(this);
-        DBPinHelper dbPin = new DBPinHelper(this);
+
+        DBHelper db = new DBHelper(this);
         EditText password_autosave=(EditText)findViewById(R.id.et_password_data);
         passwordStr = password_autosave.getText().toString();
         Log.d("Comapny + Password",companyStr + " , "+ passwordStr);
         String userPass = AESHelper.encryption(pin,passwordStr);
         Log.d("Debug Str btn clicked: ", userPass);
         db.updatePassword(companyStr,userPass);
-        Toast.makeText(getApplicationContext(), "Password Updated Successfully!", Toast.LENGTH_LONG).show();
+        /*Toast.makeText(getApplicationContext(), "Password Updated Successfully!", Toast.LENGTH_LONG).show();
         startActivity(new Intent(this, FingerprintActivity.class));*/
         /*Intent intent = new Intent(getApplicationContext(),PassList.class);
         startActivity(intent);*/
