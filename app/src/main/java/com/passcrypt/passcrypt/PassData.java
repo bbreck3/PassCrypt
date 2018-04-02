@@ -17,7 +17,7 @@ public class PassData extends AppCompatActivity {
 
     String companyStr;
     String passwordStr;
-   //SecretKey secretKey;
+    String userIDStr;
     SecretKey secret;
     AESHelper aesHelper = new AESHelper();
     DBPinHelper dbPin = new DBPinHelper(this);
@@ -29,6 +29,7 @@ public class PassData extends AppCompatActivity {
         Button btnAdd = (Button) findViewById(R.id.btnAddPass);
         final EditText company = (EditText) findViewById(R.id.et_company);
         final EditText password = (EditText) findViewById(R.id.et_password);
+        final EditText userID = (EditText)findViewById(R.id.et_user_id);
         final DBHelper db = new DBHelper(this);
         final String pin = dbPin.getPin();
         //final AESHelper AESHelper =new AESHelper();
@@ -43,6 +44,7 @@ public class PassData extends AppCompatActivity {
             public void onClick(View view) {
                 companyStr = company.getText().toString();
                 passwordStr = password.getText().toString();
+                userIDStr = userID.getText().toString();
                 //Toast.makeText(getApplicationContext(),"Company: " + companyStr + "\n Password: " + passwordStr,Toast.LENGTH_LONG).show();
 
                 /*if(companyStr.equals("") && password.getText().toString().equals("")){
@@ -52,6 +54,8 @@ public class PassData extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Company Field cannot be blank", Toast.LENGTH_LONG).show();
                 } else if (passwordStr.equals("")) {
                     Toast.makeText(getApplicationContext(), "Password Field cannot be blank", Toast.LENGTH_LONG).show();
+                } else if(userIDStr.equals("")){
+                    Toast.makeText(getApplicationContext(), "User ID Field cannot be blank", Toast.LENGTH_LONG).show();
                 } else if (!companyStr.equals("") && !passwordStr.equals("")) {
                     try {
                             String keyStr="";
@@ -59,41 +63,13 @@ public class PassData extends AppCompatActivity {
                             if(bundle!=null){
                                 keyStr=bundle.getString("key");
                             }
-                        // decode the base64 encoded string
 
-                        //byte[] decodedKey = Base64.decode(keyStr, Base64.DEFAULT);//keyStr.getBytes();//Base64.getDecoder().decode(encodedKey);
-
-                        // rebuild key using SecretKeySpec
-                        /*SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
-                        aesHelper.setSecretKey(originalKey);*/
-
-                       // Log.d("Plaintext: ", passwordStr);
                         String enc = AESHelper.encryption(pin,passwordStr);
-                        //Log.d("Encrypted: ", enc);
-                        //String dec = AESHelper.decryption(enc);
-                        //Log.d("Original: ", dec);
-                        //aesHelper.setSecretKey(keyStr);
-                       //  byte[] passwordEnc = aesHelper.encrypt(passwordStr,aesHelper.getSecretKey());
-                        //String passwordEncStr = passwordEnc.toString();
-                        //Log.d("Encrypt String: " , passwordEncStr);
-
-                        //String passwordDecStr = aesHelper.decrypt(passwordEnc,aesHelper.getSecretKey());
-                        //Log.d("Decrypt String: ", passwordDecStr);
-
-                       /* String companyStr = company.getText().toString();
-                        String passwordStr = password.getText().toString();
-*/
-
-                      /*  byte[] passwordEnc = AESHelper.encrypt(passwordStr,secret);
-                        String passwordEncStr = passwordEnc.toString();*/
-                      //  Log.d("Password Enc String: ", passwordEncStr);
+                        Log.d("USER_ID:(PASSDATA) ", userIDStr);
+                        //db.insertPassword(companyStr, enc,userIDStr);
                         db.insertPassword(companyStr, enc);
                         //Toast.makeText(getApplicationContext(),"Company: " + companyStr + "\n Password: " + passwordStr,Toast.LENGTH_LONG).show();
                         Toast.makeText(getApplicationContext(), "Passwords Stored Successfully!", Toast.LENGTH_LONG).show();
-                        for (long i = 0; i < 300000000; i++) {
-                            int temp = 0;
-                            temp += i;
-                        }
                         Intent intent = new Intent(getApplicationContext(), PassList.class);
                         startActivity(intent);
                     }catch (Exception e){

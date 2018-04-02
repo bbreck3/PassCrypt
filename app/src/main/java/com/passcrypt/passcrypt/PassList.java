@@ -1,6 +1,9 @@
 package com.passcrypt.passcrypt;
 
+import android.content.Context;
 import android.content.Intent;
+import android.icu.text.UnicodeSetSpanner;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +22,10 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -29,6 +36,7 @@ public class PassList extends AppCompatActivity {
     ArrayList<Password> deleteList = new ArrayList<Password>();
     ArrayList<Password> updList = new ArrayList<Password>();
     AESHelper aesHelper = new AESHelper();
+    static Context context;
 
 
     @Override
@@ -37,18 +45,21 @@ public class PassList extends AppCompatActivity {
         setContentView(R.layout.activity_pass_list);
         final DBHelper db = new DBHelper(this);
         final SwipeRefreshLayout swipeRefresh;
-
-
-
+        final DBPinHelper dbPin = new DBPinHelper(this);
+        String pin = dbPin.getPin();
+        context=this;
         if(exists("passwords_db.db",db)) {
+            //db.upgrade();
             //main list containing all the passwords
+            //////////////////////////////////////////////
+            /// DO NOT DELETE THIS!!!!!!
+            //////////////////////////////////////////////
             pass_list = db.getAllPasswords();//getAllRecords(db);
-           /* for(int i=0;i<pass_list.size();i++){
-                Log.d("Password: ", pass_list.get(i).toString());
-            }*/
+
         } else{
             db.createDatabase();
             pass_list = db.getAllPasswords();
+
         }
         final ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_multiple_choice,pass_list);
         //final AbsListView adapter = AbsListView.MultiChoiceModeListener();//new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,pass_list);
@@ -58,7 +69,7 @@ public class PassList extends AppCompatActivity {
         listView.setAdapter(adapter);
 
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        Collections.sort(pass_list);
+        //Collections.sort(pass_list);
         adapter.notifyDataSetChanged();
 
         listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
@@ -145,54 +156,36 @@ public class PassList extends AppCompatActivity {
                 String itemValue = (String) listView.getItemAtPosition(position);
                 Password password = db.getPassword(itemValue);
                 String key = password.getKey();
-                String passwordStr  = password.getPassword();
-                Log.d("Password", passwordStr);
-
-                /**
-                 *  For an alert Dialog idea.
-                 *  Could not get to work but will leave in as I like this idea
-                 */
-                /*final AlertDialog.Builder alertDialog = new AlertDialog.Builder(getApplicationContext(), R.style.AlertDialogTheme);
-                alertDialog.setTitle(itemValue + "'s Password")
-                            .setMessage(password)
-                            .setPositiveButton("OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });*/
-                //alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL,"OK");
-                        /*.setCancelable(false)
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.cancel();
-                            }
-                        });*/
-                //alertDialog.show();
-
-                Intent intent = new Intent(getApplicationContext(),ShowPassData.class);
-                intent.putExtra("password",passwordStr);
-                intent.putExtra("company",itemValue);
-                intent.putExtra("key",key);
-                startActivity(intent);
+                String passwordStr = password.getPassword();
+                /*if (password.getUserID() == null) {
+                    Intent intent = new Intent(getApplicationContext(),AddUserID.class);
+                    intent.putExtra("company", itemValue);
+                    startActivity(intent);
+                } else {
+                    //String userID = password.getUserID();
+                */
+                    Intent intent = new Intent(getApplicationContext(), ShowPassData.class);
+                    intent.putExtra("password", passwordStr);
+                    intent.putExtra("company", itemValue);
+                    //intent.putExtra("key", key);
+                    //intent.putExtra("user_id", userID);
+                    startActivity(intent);
+                //}
             }
         });
+        ////////////////////////////////////////////////////
+        ////
+        //// Button Sections
+        ////////////////////////////////////////////////////
         Button btnAdd = (Button)findViewById(R.id.btnAddVal);
         Button btnDel = (Button)findViewById(R.id.btnDelVal);
         Button btnUpd = (Button)findViewById(R.id.btnUpdatePass);
-
+        Button btnDspl = (Button)findViewById(R.id.btnDisplayAll);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
                 try {
-                    //SecretKey secretKey = aesHelper.generateKey();
-                   // Base64.getEncoder().encodeToString(secretKey.getEncoded());
-                    //String keyStr = secretKey.getEncoded().toString();
-                    //Log.d("Key: ", secretKey.getEncoded().toString());
                     Intent intent = new Intent(PassList.this, PassData.class);
-
-                    //intent.putExtra("key", keyStr);
                     startActivity(intent);
                 }catch (Exception e){
                     Log.d("Error: ",e.toString());
@@ -231,9 +224,11 @@ public class PassList extends AppCompatActivity {
                     Password tempPass = updList.get(0);
                     String passwordStr = tempPass.getPassword();
                     String companyStr = tempPass.getCompany();
+                    //String userIDStr = tempPass.getUserID();
                     Intent intent = new Intent(getApplicationContext(), show_update_pass.class);
                     intent.putExtra("company", companyStr);
                     intent.putExtra("password", passwordStr);
+                   // intent.putExtra("user_id",userIDStr);
                     startActivity(intent);
                 } else if(updList.size()==0) {
                     Toast.makeText(getApplicationContext(),"Select a password to update!",Toast.LENGTH_LONG).show();
@@ -241,6 +236,14 @@ public class PassList extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(),"Select ONLY 1 to update!",Toast.LENGTH_LONG).show();
                 }
             }
+        });
+
+        btnDspl.setOnClickListener(new View.OnClickListener(){
+           @Override
+            public void onClick(View view){
+               Intent intent = new Intent(getApplicationContext(),DisplayPasswords.class);
+               startActivity(intent);
+           }
         });
         /**
          *  Spinner really isnt needed...leaving for aesthetics only...?
@@ -264,15 +267,12 @@ public class PassList extends AppCompatActivity {
                 }, 3000);
             }
         });
+
     }
 
     @Override
     protected void onRestart(){
         super.onRestart();
-        /*Collections.sort(pass_list);
-        for(int i=0;i<pass_list.size();i++){
-            Log.d("Password: ", pass_list.get(i).toString());
-        }*/
         startActivity(new Intent(this, FingerprintActivity.class));
 
     }
@@ -312,19 +312,10 @@ public class PassList extends AppCompatActivity {
         String dbName = db.getDatabaseName();
 
         if(dbName.equals(table)){
-           /* Log.d("DEBUG",dbName);
-            Log.d("DEBUG","DEBUG");*/
-
             return true;
         } else{
             return false;
         }
-        /*try{
-            db.("Select * FROM " +table,null);
-            return true;
-        }catch (SQLException e){
-            return false;
-        }*/
     }
 
     /**

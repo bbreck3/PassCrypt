@@ -16,18 +16,23 @@ public class ShowPassData extends AppCompatActivity {
         String userPassword;
         String userCompany;
         String userKey;
+        //String userID;
         AESHelper AESHelper = new AESHelper();
         DBPinHelper dbPinHelper = new DBPinHelper(this);
         String pin = dbPinHelper.getPin();
 //        final TextView company = (TextView) findViewById(R.id.tv_company_data);
-        final TextView password = (TextView) findViewById(R.id.tv_password_data);
+        final TextView password = (TextView) findViewById(R.id.tv_password);
+        final TextView user_id = (TextView)findViewById(R.id.tv_user_id);
         Bundle bundle = getIntent().getExtras();
         try {
             if (bundle != null) {
                 userPassword = bundle.getString("password");
                 //userCompany = bundle.getString("company");
+                //userID = bundle.getString("user_id");
                 String userPass = AESHelper.decryption(pin,userPassword);
                 password.setText(userPass);
+                //user_id.setText(userID);
+                //Log.d("SHOWPASSDATA: USER_ID: ",userID);
             }
         } catch (Exception e) {
             Log.d("Error: ", e.toString());
