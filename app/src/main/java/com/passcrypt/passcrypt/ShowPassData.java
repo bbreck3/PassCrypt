@@ -16,22 +16,34 @@ public class ShowPassData extends AppCompatActivity {
         String userPassword;
         String userCompany;
         String userKey;
-        //String userID;
+        String userID;
         AESHelper AESHelper = new AESHelper();
         DBPinHelper dbPinHelper = new DBPinHelper(this);
         String pin = dbPinHelper.getPin();
 //        final TextView company = (TextView) findViewById(R.id.tv_company_data);
         final TextView password = (TextView) findViewById(R.id.tv_password);
         final TextView user_id = (TextView)findViewById(R.id.tv_user_id);
+        final TextView reallyLongUserID = (TextView)findViewById(R.id.reallyLongUserID);
         Bundle bundle = getIntent().getExtras();
         try {
             if (bundle != null) {
+                //GET UDER DATA
                 userPassword = bundle.getString("password");
                 //userCompany = bundle.getString("company");
-                //userID = bundle.getString("user_id");
+                userID = bundle.getString("user_id");
                 String userPass = AESHelper.decryption(pin,userPassword);
+
+                //SET USER DATA
                 password.setText(userPass);
-                //user_id.setText(userID);
+                Log.d(" ***DEBUG User ID Len: ",Integer.toString(userID.length()));
+                if(userID.length()<=23) {
+                    user_id.setText(userID);
+                    Log.d("****DEBUG******","User id is 23 or less");
+                    //reallyLongUserID.setText(userID);
+                } else{
+                    reallyLongUserID.setText(userID);
+                }
+
                 //Log.d("SHOWPASSDATA: USER_ID: ",userID);
             }
         } catch (Exception e) {

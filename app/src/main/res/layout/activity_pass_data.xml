@@ -100,4 +100,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gridlayout" />
 
+    <!--<TextView
+        android:id="@+id/userIdLen"
+        android:layout_width="298dp"
+        android:layout_height="30dp"
+        android:gravity="left"
+        android:text="UserID Lenght: "
+        app:layout_constraintBottom_toTopOf="@+id/gridlayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />-->
+
+    <!--<TextView
+        android:id="@+id/userIdLen"
+        android:layout_width="298dp"
+        android:layout_height="30dp"
+        android:gravity="left"
+        android:text="UserID Lenght: "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gridlayout" /> -->
+
+
 </android.support.constraint.ConstraintLayout>

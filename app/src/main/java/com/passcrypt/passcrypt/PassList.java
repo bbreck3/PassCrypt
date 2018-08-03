@@ -26,8 +26,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Calendar;
+import java.util.Date;
+
 
 public class PassList extends AppCompatActivity {
 
@@ -44,23 +48,43 @@ public class PassList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pass_list);
         final DBHelper db = new DBHelper(this);
+        final DBDateHelper dbDate = new DBDateHelper(this);
         final SwipeRefreshLayout swipeRefresh;
         final DBPinHelper dbPin = new DBPinHelper(this);
-        String pin = dbPin.getPin();
+        String pin = null;
         context=this;
+        if(exists("pins_db.db",dbPin)){
+            pin = dbPin.getPin();
+
+        }else{
+            dbPin.createDatabase();
+            Intent intent = new Intent(getApplicationContext(),SetPin.class);
+
+            startActivity(intent);
+        }
+
         if(exists("passwords_db.db",db)) {
-            //db.upgrade();
+            db.upgrade();
             //main list containing all the passwords
             //////////////////////////////////////////////
             /// DO NOT DELETE THIS!!!!!!
             //////////////////////////////////////////////
+
             pass_list = db.getAllPasswords();//getAllRecords(db);
 
         } else{
             db.createDatabase();
+            //////////////////////////////
+            ///
+            /// NEED TO FILL THE DATABASE FROM THE BACK UP
+            //////////////////////////////
             pass_list = db.getAllPasswords();
 
         }
+
+
+
+
         final ArrayAdapter adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_multiple_choice,pass_list);
         //final AbsListView adapter = AbsListView.MultiChoiceModeListener();//new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,pass_list);
 
@@ -69,7 +93,7 @@ public class PassList extends AppCompatActivity {
         listView.setAdapter(adapter);
 
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        //Collections.sort(pass_list);
+        Collections.sort(pass_list);
         adapter.notifyDataSetChanged();
 
         listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
@@ -83,7 +107,7 @@ public class PassList extends AppCompatActivity {
                 mode.setTitle(checkedCount + " Seclected");
                 //adapter.setNotifyOnChange(checked);
                 String itemValue = (String) listView.getItemAtPosition(position);
-                Log.d("Checked:", Boolean.toString(checked));
+
                 Password password = db.getPassword(itemValue);
                  deleteList.add(password);
                  updList.add(password);
@@ -93,7 +117,7 @@ public class PassList extends AppCompatActivity {
                         if (checkedItemPositions.valueAt(i)) {
                             String item = listView.getAdapter().getItem(checkedItemPositions.keyAt(i)).toString();
                             Password temp = db.getPassword(item);
-                            //Log.d("Checked item: ", item);
+
                             updList.clear();
                             updList.add(temp);
                             adapter.setNotifyOnChange(checked);
@@ -157,20 +181,19 @@ public class PassList extends AppCompatActivity {
                 Password password = db.getPassword(itemValue);
                 String key = password.getKey();
                 String passwordStr = password.getPassword();
-                /*if (password.getUserID() == null) {
+                if (password.getUserID() == null) {
                     Intent intent = new Intent(getApplicationContext(),AddUserID.class);
                     intent.putExtra("company", itemValue);
                     startActivity(intent);
                 } else {
-                    //String userID = password.getUserID();
-                */
+                    String userID = password.getUserID();
                     Intent intent = new Intent(getApplicationContext(), ShowPassData.class);
                     intent.putExtra("password", passwordStr);
                     intent.putExtra("company", itemValue);
                     //intent.putExtra("key", key);
-                    //intent.putExtra("user_id", userID);
+                    intent.putExtra("user_id", userID);
                     startActivity(intent);
-                //}
+                }
             }
         });
         ////////////////////////////////////////////////////
@@ -180,7 +203,7 @@ public class PassList extends AppCompatActivity {
         Button btnAdd = (Button)findViewById(R.id.btnAddVal);
         Button btnDel = (Button)findViewById(R.id.btnDelVal);
         Button btnUpd = (Button)findViewById(R.id.btnUpdatePass);
-        Button btnDspl = (Button)findViewById(R.id.btnDisplayAll);
+        //Button btnDspl = (Button)findViewById(R.id.btnDisplayAll);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
@@ -238,13 +261,13 @@ public class PassList extends AppCompatActivity {
             }
         });
 
-        btnDspl.setOnClickListener(new View.OnClickListener(){
+        /*btnDspl.setOnClickListener(new View.OnClickListener(){
            @Override
             public void onClick(View view){
                Intent intent = new Intent(getApplicationContext(),DisplayPasswords.class);
                startActivity(intent);
            }
-        });
+        });*/
         /**
          *  Spinner really isnt needed...leaving for aesthetics only...?
          *
@@ -309,6 +332,26 @@ public class PassList extends AppCompatActivity {
         return passwordStr;
     }*/
     public boolean exists(String table, DBHelper db){
+        String dbName = db.getDatabaseName();
+
+        if(dbName.equals(table)){
+            return true;
+        } else{
+            return false;
+        }
+    }
+
+    public boolean exists(String table, DBPinHelper db){
+        String dbName = db.getDatabaseName();
+
+        if(dbName.equals(table)){
+            return true;
+        } else{
+            return false;
+        }
+    }
+
+    public boolean exists(String table, DBDateHelper db){
         String dbName = db.getDatabaseName();
 
         if(dbName.equals(table)){

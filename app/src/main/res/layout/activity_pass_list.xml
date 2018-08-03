@@ -56,7 +56,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btnAddVal" />
 
-        <Button
+        <!--<Button
             android:id="@+id/btnDisplayAll"
             android:layout_width="0dp"
             android:layout_height="60dp"
@@ -64,7 +64,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnDelVal" />
+            app:layout_constraintTop_toBottomOf="@+id/btnDelVal" />-->
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

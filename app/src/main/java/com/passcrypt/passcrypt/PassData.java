@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 //import java.util.Base64;
@@ -32,6 +33,7 @@ public class PassData extends AppCompatActivity {
         final EditText userID = (EditText)findViewById(R.id.et_user_id);
         final DBHelper db = new DBHelper(this);
         final String pin = dbPin.getPin();
+
         //final AESHelper AESHelper =new AESHelper();
 //        SecretKey secretKey = generateKey("password");
         try {
@@ -50,13 +52,15 @@ public class PassData extends AppCompatActivity {
                 /*if(companyStr.equals("") && password.getText().toString().equals("")){
                     Toast.makeText(getApplicationContext(),"Fields cannot be blank",Toast.LENGTH_LONG).show();
                 } */
+
+               // tv_userIDLen.setText("UserIDLen: "+Integer.toString(getUserLength(userIDStr)));
                 if (companyStr.equals("")) {
                     Toast.makeText(getApplicationContext(), "Company Field cannot be blank", Toast.LENGTH_LONG).show();
                 } else if (passwordStr.equals("")) {
                     Toast.makeText(getApplicationContext(), "Password Field cannot be blank", Toast.LENGTH_LONG).show();
-                } else if(userIDStr.equals("")){
+                } /*else if(userIDStr.equals("")){
                     Toast.makeText(getApplicationContext(), "User ID Field cannot be blank", Toast.LENGTH_LONG).show();
-                } else if (!companyStr.equals("") && !passwordStr.equals("")) {
+                }*/ else if (!companyStr.equals("") && !passwordStr.equals("")) {
                     try {
                             String keyStr="";
                             Bundle bundle = getIntent().getExtras();
@@ -66,8 +70,8 @@ public class PassData extends AppCompatActivity {
 
                         String enc = AESHelper.encryption(pin,passwordStr);
                         Log.d("USER_ID:(PASSDATA) ", userIDStr);
-                        //db.insertPassword(companyStr, enc,userIDStr);
-                        db.insertPassword(companyStr, enc);
+                        db.insertPassword(companyStr, enc,userIDStr);
+                        //db.insertPassword(companyStr, enc);
                         //Toast.makeText(getApplicationContext(),"Company: " + companyStr + "\n Password: " + passwordStr,Toast.LENGTH_LONG).show();
                         Toast.makeText(getApplicationContext(), "Passwords Stored Successfully!", Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(getApplicationContext(), PassList.class);
@@ -81,11 +85,17 @@ public class PassData extends AppCompatActivity {
 
     }
 
+
     @Override
     protected void onRestart(){
         super.onRestart();
         startActivity(new Intent(this, FingerprintActivity.class));
 
+    }
+
+    protected int getUserLength(String userID){
+        int user_id_len = userID.length();
+        return user_id_len;
     }
     /*public String encryption(String strNormalText){
         String seedValue = "YourSecKey";

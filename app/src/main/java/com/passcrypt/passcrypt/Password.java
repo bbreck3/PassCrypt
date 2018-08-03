@@ -10,12 +10,12 @@ public class Password {
     public Password(){
 
     }
-    public Password( String company,String password){//,String user_id){
+    public Password( String company,String password,String user_id){
         //this.id = id;
         this.company = company;
         this.password = password;
         this.key = key;
-        //this.user_id=user_id;
+        this.user_id=user_id;
     }
     /*public void setId(int id){
         this.id = id;

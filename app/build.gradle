@@ -4,10 +4,10 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.passcrypt.passcrypt"
-        minSdkVersion 23
+        minSdkVersion 22
         targetSdkVersion 26
-        versionCode 5
-        versionName "2.2"
+        versionCode 7
+        versionName "2.3.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

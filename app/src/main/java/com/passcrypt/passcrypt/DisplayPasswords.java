@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +17,10 @@ public class DisplayPasswords extends AppCompatActivity {
         setContentView(R.layout.activity_display_passwords);
         DBPinHelper dbPin = new DBPinHelper(this);
         DBHelper db = new DBHelper(this);
+        String name = db.getDatabaseName();
+        String path = db.getDatabasePath();
+        String databaseInfo = "Name: " + name + "\n Path: " + path;
+        Toast.makeText(getApplicationContext(),databaseInfo,Toast.LENGTH_LONG).show();
         String pin = dbPin.getPin();
         ArrayList<String> passwords = db.getAllPasswords();
         ArrayList<String> password_data= new ArrayList<String>();

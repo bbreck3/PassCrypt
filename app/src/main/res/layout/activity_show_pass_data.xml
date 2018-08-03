@@ -64,4 +64,15 @@
             android:textStyle="bold" />
     </GridLayout>
 
+    <TextView
+        android:id="@+id/reallyLongUserID"
+        android:layout_width="296dp"
+        android:layout_height="28dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gridlayout" />
+
+
 </android.support.constraint.ConstraintLayout>
