@@ -64,10 +64,11 @@ public class show_update_pass extends AppCompatActivity {
         DBHelper db = new DBHelper(this);
         EditText password_autosave=(EditText)findViewById(R.id.et_password_data);
         passwordStr = password_autosave.getText().toString();
-        Log.d("Comapny + Password",companyStr + " , "+ passwordStr);
+        //Log.d("Comapny + Password",companyStr + " , "+ passwordStr);
         String userPass = AESHelper.encryption(pin,passwordStr);
-        Log.d("Debug Str btn clicked: ", userPass);
+        //Log.d("Debug Str btn clicked: ", userPass);
         db.updatePassword(companyStr,userPass);
+
         /*Toast.makeText(getApplicationContext(), "Password Updated Successfully!", Toast.LENGTH_LONG).show();
         startActivity(new Intent(this, FingerprintActivity.class));*/
         /*Intent intent = new Intent(getApplicationContext(),PassList.class);
